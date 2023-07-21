@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.BookMapper">
+    <select id="listByCondition" resultType="com.example.springboot.entity.Book">
+        select * from book
+        <where>
+            <if test="bookName != null and bookName != ''">
+                bookName like concat('%', #{bookName}, '%')
+            </if>
+            <if test="bookNo != null and bookNo != ''">
+                and bookNo like concat('%', #{bookNo}, '%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+
+    <insert id="save">
+        insert into book(bookName, description, publishDate,author,publisher,category,bookNo,cover,score,bookNumber)
+        values (#{bookName}, #{description},#{publishDate},#{author},#{publisher},#{category},#{bookNo},#{cover}, #{score}, #{bookNumber})
+    </insert>
+    <update id="updateById">
+        update book set bookName=#{bookName}, description=#{description}, publishDate=#{publishDate}, author=#{author},
+                        publisher=#{publisher}, category=#{category}, bookNo=#{bookNo}, cover=#{cover}, score=#{score},
+                        bookNumber=#{bookNumber}, updatetime= #{updatetime} where id= #{id}
+    </update>
+    <update id="updateNumByNo">
+        update book set bookNumber = bookNumber+1 where bookNo=#{bookNo}
+    </update>
+    <delete id="deleteById">
+        delete from book where id= #{id}
+    </delete>
+
+    <select id="list" resultType="com.example.springboot.entity.Book">
+        select * from book order by id desc
+    </select>
+
+    <select id="getById" resultType="com.example.springboot.entity.Book">
+        select * from book where id = #{id}
+    </select>
+    <select id="getByNo" resultType="com.example.springboot.entity.Book">
+        select * from book where bookno= #{bookNo}
+    </select>
+</mapper>
